@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post, Response } from '@nestjs/commo
 import { MonoEventsService } from './mono-events.service'
 import { Response as ExpressResponse } from 'express'
 import { API_ROUTE } from '../constants/constants'
-import { MonoEventInterface } from './models'
+import { RawMonoEvent } from './models'
 
 @Controller()
 export class AppController {
@@ -14,7 +14,7 @@ export class AppController {
   }
 
   @Post(API_ROUTE)
-  public setMonoSystemEvent(@Body() body: MonoEventInterface, @Response() res: ExpressResponse): void {
+  public setMonoSystemEvent(@Body() body: RawMonoEvent, @Response() res: ExpressResponse): void {
     res.status(HttpStatus.OK).send()
     this.mono.setMonoEvent(body)
   }

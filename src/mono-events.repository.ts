@@ -1,25 +1,31 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, Logger } from '@nestjs/common'
 import { DatabaseService } from './database.service'
-import { MonoEventInterface } from './models'
+import { RawMonoEvent } from './models'
+import { MonoEventTypeEnum, MonoRootEvent } from '@prisma/client'
 
 @Injectable()
 export class MonoEventsRepository {
-  private readonly _events = this.__db.monoEvent
+  private readonly lg = new Logger(MonoEventsRepository.name)
+  private readonly unknownEvents = this.__db.monoUnknownEvent
+  private readonly rootEvents = this.__db.monoRootEvent
   constructor(private readonly __db: DatabaseService) {}
 
-  public async create(event: MonoEventInterface) {
+  public async create(event: RawMonoEvent) {
     try {
-      return await this._events.create({ data: { event } })
-    } catch {
+      if (this.isMonoRootEventStatementItem(event)) {
+        this.lg.log('isMonoRootEvent')
+        return await this.rootEvents.create({ data: event })
+      }
+
+      this.lg.log('isNOT')
+      return await this.unknownEvents.create({ data: { event } })
+    } catch (e) {
+      this.lg.log(e)
       return null
     }
   }
 
-  public async events() {
-    try {
-      return await this._events.findMany()
-    } catch {
-      return []
-    }
+  private isMonoRootEventStatementItem(c: unknown): c is MonoRootEvent {
+    return (c as MonoRootEvent)?.type === MonoEventTypeEnum.StatementItem
   }
 }

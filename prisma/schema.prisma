@@ -26,7 +26,7 @@ model MonoRootEvent {
   id     String            @id @default(uuid())
   data   MonoRootData?
   type   MonoEventTypeEnum
-  fromIp String
+  fromIp String?
 }
 
 model MonoRootData {
