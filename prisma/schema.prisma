@@ -19,40 +19,27 @@ model Admin {
 model MonoUnknownEvent {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
-  event     Json
+  event     String
 }
 
-model MonoRootEvent {
-  id     String            @id @default(uuid())
-  data   MonoRootData?
-  type   MonoEventTypeEnum
-  fromIp String?
-}
-
-model MonoRootData {
-  id              String             @id @default(uuid())
+model MonoEventStatementItem {
+  id              String            @id @default(uuid())
+  type            MonoEventTypeEnum
+  createdAt       DateTime          @default(now()) @map("created_at")
   account         String
-  monoRootEvent   MonoRootEvent      @relation(fields: [monoRootEventId], references: [id])
-  monoRootEventId String             @unique
-  statementItem   MonoStatementItem?
-}
-
-model MonoStatementItem {
-  id              String       @id @unique // monobank gives theirs id
+  monoId          String            @unique @map("mono_id") // monobank gives theirs id
   mcc             Int
   hold            Boolean
   time            Int
   amount          Int
   balance         Int
-  receiptId       String
+  receiptId       String            @map("receipt_id")
   description     String
-  originalMcc     Int
-  currencyCode    Int
-  cashbackAmount  Int
-  commissionRate  Int
-  operationAmount Int
-  monoRootData    MonoRootData @relation(fields: [monoRootDataId], references: [id])
-  monoRootDataId  String       @unique
+  originalMcc     Int               @map("original_mcc")
+  currencyCode    Int               @map("currency_code")
+  cashbackAmount  Int               @map("cashback_amount")
+  commissionRate  Int               @map("commission_rate")
+  operationAmount Int               @map("operation_amount")
 }
 
 enum MonoEventTypeEnum {
