@@ -12,7 +12,7 @@ jobs:
           APP_HOSTNAME: ${{ secrets.APP_HOSTNAME }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
-        run: ./.github/workflows/deploy/create-env.ps1
+        run: ./.github/workflows/create-env.ps1
         shell: pwsh
       - name: rsync deploy
         uses: burnett01/rsync-deployments@5.2.1
