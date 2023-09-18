@@ -1,9 +1,13 @@
+# Get short version of commit
+$short_sha = $env:GITHUB_SHA.Substring(0, 7)
+
 # Define the content what need to write to the file
 $envContent = @"
 DATABASE_URL=$env:DATABASE_URL
 PORT=$env:APP_PORT
 HOSTNAME=$env:APP_HOSTNAME
 CORS_ORIGIN=$env:CORS_ORIGIN
+GIT_COMMIT=$short_sha
 "@
 
 # Write the content to a new .env file

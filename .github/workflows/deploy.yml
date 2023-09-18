@@ -12,6 +12,7 @@ jobs:
           APP_HOSTNAME: ${{ secrets.APP_HOSTNAME }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+          GITHUB_SHA: ${{ github.sha }}
         run: ./.github/workflows/create-env.ps1
         shell: pwsh
       - name: rsync deploy
