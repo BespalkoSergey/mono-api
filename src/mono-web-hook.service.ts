@@ -26,6 +26,7 @@ export class MonoWebHookService implements OnModuleInit, OnModuleDestroy {
     this.onDestroy$.complete()
   }
 
+  // @ts-ignore
   private checkWebHook(): void {
     this.onInit$
       .pipe(
