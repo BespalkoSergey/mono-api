@@ -4,7 +4,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: added .env file
+        env:
+          APP_PORT: ${{ secrets.APP_PORT }}
+          APP_HOSTNAME: ${{ secrets.APP_HOSTNAME }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
+        run: ./.github/workflows/deploy/create-env.ps1
+        shell: pwsh
       - name: rsync deploy
         uses: burnett01/rsync-deployments@5.2.1
         with:
