@@ -7,7 +7,7 @@
     "start": "npm ci && npm run db:g && npm run build && npm run start:prod",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main.js",
     "db:g": "prisma generate",
     "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix"
   },
