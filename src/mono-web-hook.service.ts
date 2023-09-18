@@ -14,7 +14,7 @@ export class MonoWebHookService implements OnModuleInit, OnModuleDestroy {
     responseType: 'json'
   }
   constructor(private readonly config: ConfigService) {
-    this.checkWebHook()
+    // this.checkWebHook()
   }
 
   public onModuleInit(): void {
