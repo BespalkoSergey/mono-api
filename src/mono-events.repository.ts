@@ -13,14 +13,14 @@ export class MonoEventsRepository {
   public async create(event: RawMonoEvent) {
     try {
       if (this.isMonoRootEventStatementItem(event)) {
-        this.lg.log('isMonoRootEvent')
+        this.lg.log(JSON.stringify(event))
         return await this.rootEvents.create({ data: event })
       }
 
       this.lg.log('isNOT')
       return await this.unknownEvents.create({ data: { event } })
     } catch (e) {
-      this.lg.log(e)
+      console.log(e)
       return null
     }
   }
