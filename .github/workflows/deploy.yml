@@ -13,6 +13,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
           GITHUB_SHA: ${{ github.sha }}
+          CLIENT_INFO_X_TOKEN: ${{ secrets.CLIENT_INFO_X_TOKEN }}
         run: ./.github/workflows/create-env.ps1
         shell: pwsh
       - name: rsync deploy
