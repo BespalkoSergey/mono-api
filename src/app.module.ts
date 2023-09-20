@@ -5,14 +5,12 @@ import * as cors from 'cors'
 import { API_ROUTE } from '../constants/constants'
 import { MonoWebHookService } from './services/mono-web-hook.service'
 import { HttpModule } from '@nestjs/axios'
-import { DatabaseService } from './database/database.service'
-import { MonoEventsRepository } from './database/repositories/mono-events.repository'
-import { MonoEventsService } from './database/services/mono-events.service'
+import { DatabaseModule } from './database/database.module'
 
 @Module({
-  imports: [HttpModule, ConfigModule.forRoot()],
+  imports: [DatabaseModule, HttpModule, ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [MonoWebHookService, DatabaseService, MonoEventsRepository, MonoEventsService]
+  providers: [MonoWebHookService]
 })
 export class AppModule implements NestModule {
   constructor(private readonly config: ConfigService) {}
