@@ -6,9 +6,10 @@ import { API_ROUTE } from '../constants/constants'
 import { MonoWebHookService } from './services/mono-web-hook.service'
 import { HttpModule } from '@nestjs/axios'
 import { DatabaseModule } from './database/database.module'
+import { TelegramModule } from './telegram/telegram.module'
 
 @Module({
-  imports: [DatabaseModule, HttpModule, ConfigModule.forRoot()],
+  imports: [DatabaseModule, HttpModule, ConfigModule.forRoot(), TelegramModule],
   controllers: [AppController],
   providers: [MonoWebHookService]
 })
