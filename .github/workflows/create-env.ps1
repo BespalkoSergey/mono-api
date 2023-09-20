@@ -9,6 +9,7 @@ HOSTNAME=$env:APP_HOSTNAME
 CORS_ORIGIN=$env:CORS_ORIGIN
 CLIENT_INFO_X_TOKEN=$env:CLIENT_INFO_X_TOKEN
 GIT_COMMIT=$short_sha
+PRISMA_DISABLE_WARNINGS=true
 "@
 
 # Write the content to a new .env file
