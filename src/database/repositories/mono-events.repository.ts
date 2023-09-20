@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
-import { DatabaseService } from './database.service'
-import { RawMonoEvent } from './models'
-import { MonoEventTypeEnum } from '@prisma/client'
+import { DatabaseService } from '../database.service'
+import { RawMonoEvent } from '../../models/models'
+import { MonoEventTypeEnum, MonoEventStatementItem, MonoUnknownEvent } from '@prisma/client'
 
 @Injectable()
 export class MonoEventsRepository {
@@ -9,7 +9,7 @@ export class MonoEventsRepository {
   private readonly statementItems = this.__db.monoEventStatementItem
   constructor(private readonly __db: DatabaseService) {}
 
-  public async create(event: RawMonoEvent) {
+  public async create(event: RawMonoEvent): Promise<MonoEventStatementItem | MonoUnknownEvent | null> {
     try {
       if (this.isMonoRootEventStatementItem(event)) {
         const { account = '', statementItem } = event?.data ?? {}
