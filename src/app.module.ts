@@ -7,9 +7,10 @@ import * as cors from 'cors'
 import { API_ROUTE } from '../constants/constants'
 import { MonoWebHookService } from './mono-web-hook.service'
 import { MonoEventsRepository } from './mono-events.repository'
+import { HttpModule } from '@nestjs/axios'
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [HttpModule, ConfigModule.forRoot()],
   controllers: [AppController],
   providers: [DatabaseService, MonoEventsService, MonoWebHookService, MonoEventsRepository]
 })
