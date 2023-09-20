@@ -6,6 +6,14 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: node install
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run db:g
+      - run: npm run build
       - name: added .env file
         env:
           APP_PORT: ${{ secrets.APP_PORT }}
