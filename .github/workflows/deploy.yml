@@ -22,7 +22,8 @@ jobs:
           CORS_ORIGIN: ${{ secrets.CORS_ORIGIN }}
           GITHUB_SHA: ${{ github.sha }}
           CLIENT_INFO_X_TOKEN: ${{ secrets.CLIENT_INFO_X_TOKEN }}
-          TELEGRAM_API_TOKEN: ${{ secrets.TELEGRAM_API_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
         run: ./.github/workflows/create-env.ps1
         shell: pwsh
       - name: rsync deploy
