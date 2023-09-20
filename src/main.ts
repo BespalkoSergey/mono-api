@@ -9,6 +9,9 @@ async function bootstrap() {
   app.disable('x-powered-by')
   app.enableShutdownHooks()
   const config: ConfigService = app.get(ConfigService)
-  await app.listen(Number(config.get('PORT')), String(config.get('HOSTNAME')), () => Logger.log(`App run commit ${config.get('GIT_COMMIT')}`))
+  await app.listen(Number(config.get('PORT')), String(config.get('HOSTNAME')), () => {
+    const logger = new Logger('GIT_COMMIT')
+    logger.log(config.get('GIT_COMMIT'))
+  })
 }
 bootstrap()
