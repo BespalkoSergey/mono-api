@@ -1,18 +1,18 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller'
-import { DatabaseService } from './database.service'
-import { MonoEventsService } from './mono-events.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as cors from 'cors'
 import { API_ROUTE } from '../constants/constants'
-import { MonoWebHookService } from './mono-web-hook.service'
-import { MonoEventsRepository } from './mono-events.repository'
+import { MonoWebHookService } from './services/mono-web-hook.service'
 import { HttpModule } from '@nestjs/axios'
+import { DatabaseService } from './database/database.service'
+import { MonoEventsRepository } from './database/repositories/mono-events.repository'
+import { MonoEventsService } from './database/services/mono-events.service'
 
 @Module({
   imports: [HttpModule, ConfigModule.forRoot()],
   controllers: [AppController],
-  providers: [DatabaseService, MonoEventsService, MonoWebHookService, MonoEventsRepository]
+  providers: [MonoWebHookService, DatabaseService, MonoEventsRepository, MonoEventsService]
 })
 export class AppModule implements NestModule {
   constructor(private readonly config: ConfigService) {}
