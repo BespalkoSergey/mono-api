@@ -14,8 +14,8 @@ export const MONEY_OPERATION_TG_EMOJI_MAP: Record<string, string> = {
 }
 
 export const DB_STATUS_TG_EMOJI_MAP: Record<DbStatusEmojiUnion, string> = {
-  connected: '🟢',
-  disconnected: '🔴'
+  CONNECTED: '💾🟢',
+  DISCONNECTED: '💾🔴'
 }
 
 export const STICKERS_MAP: Record<StickersEmojiUnion, string> = {

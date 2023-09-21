@@ -33,7 +33,7 @@ export type RawMonoEventStatementItem =
     }
   | undefined
 
-export type DbStatusEmojiUnion = 'connected' | 'disconnected'
+export type DbStatusEmojiUnion = 'CONNECTED' | 'DISCONNECTED'
 
 export type StickersEmojiUnion = 'CREPT_UP_TO_THE_BLINDS'
 

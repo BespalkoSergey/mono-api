@@ -17,8 +17,9 @@ export class TelegramService {
     private readonly config: ConfigService
   ) {}
 
-  public async log(instance: string, message: string): Promise<void> {
-    await this.bot.telegram.sendMessage(this.channelId, `<b>[MONO-API ${instance}]</b>\n${message}`, { disable_notification: true, parse_mode: 'HTML' })
+  public async log(instance: string, message: string, msgFromNewLine = true): Promise<void> {
+    const text = `<b>[MONO-API ${instance}]</b>${msgFromNewLine ? '\n' : '  '}${message}`
+    await this.bot.telegram.sendMessage(this.channelId, text, { disable_notification: true, parse_mode: 'HTML' })
   }
 
   public sendSticker(emoji: StickersEmojiUnion): void {
