@@ -1,4 +1,5 @@
 import { MonoEventTypeEnum } from '@prisma/client'
+
 export type RawMonoEvent =
   | {
       data?: RawMonoEventData
@@ -31,3 +32,14 @@ export type RawMonoEventStatementItem =
       operationAmount?: number
     }
   | undefined
+
+export type DbStatusEmojiUnion = 'connected' | 'disconnected'
+
+export type StickersEmojiUnion = 'CREPT_UP_TO_THE_BLINDS'
+
+type CustomEnumType<ValuesUnion extends string> = {
+  [K in ValuesUnion]: K
+}
+
+type ConfigKeysUnion = 'PORT' | 'HOSTNAME' | 'CORS_ORIGIN' | 'CLIENT_INFO_X_TOKEN' | 'GIT_COMMIT' | 'TELEGRAM_BOT_TOKEN' | 'TELEGRAM_CHANNEL_ID'
+export type ConfigKeysType = CustomEnumType<ConfigKeysUnion>

@@ -3,6 +3,7 @@ import { DatabaseService } from '../database.service'
 import { RawMonoEvent } from '../../models/models'
 import { MonoEventTypeEnum, MonoEventStatementItem, MonoUnknownEvent } from '@prisma/client'
 import { TelegramService } from '../../telegram/telegram.service'
+import { getGrn, getMoneyOperationEmoji } from '../../../utils/utils'
 
 @Injectable()
 export class MonoEventsRepository {
@@ -52,15 +53,18 @@ export class MonoEventsRepository {
             operationAmount
           }
         })
-        await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(item, null, 2)}`)
+        await this.telegram.log(
+          'MonoEventsRepository',
+          [`Description: <tg-spoiler>${item.description}</tg-spoiler>`, `Operation: ${getMoneyOperationEmoji(item.operationAmount)} ${getGrn(item.operationAmount)}`].join('\n')
+        )
         return item
       }
 
       const item = await this.unknownEvents.create({ data: { event: JSON.stringify(event) } })
-      await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(item, null, 2)}`)
+      await this.telegram.log('MonoEventsRepository', `Unknown event: ${event?.['type'] ?? ''}`)
       return item
     } catch (e) {
-      await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(e, null, 2)}`)
+      await this.telegram.log('MonoEventsRepository', `<pre>${JSON.stringify(e, null, 2)}</pre>`)
       return null
     }
   }
