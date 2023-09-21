@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common'
 import { DatabaseService } from '../database.service'
 import { RawMonoEvent } from '../../models/models'
 import { MonoEventTypeEnum, MonoEventStatementItem, MonoUnknownEvent } from '@prisma/client'
+import { TelegramService } from '../../telegram/telegram.service'
 
 @Injectable()
 export class MonoEventsRepository {
   private readonly unknownEvents = this.__db.monoUnknownEvent
   private readonly statementItems = this.__db.monoEventStatementItem
-  constructor(private readonly __db: DatabaseService) {}
+  constructor(
+    private readonly __db: DatabaseService,
+    private readonly telegram: TelegramService
+  ) {}
 
   public async create(event: RawMonoEvent): Promise<MonoEventStatementItem | MonoUnknownEvent | null> {
     try {
@@ -29,7 +33,7 @@ export class MonoEventsRepository {
           operationAmount = 0
         } = statementItem ?? {}
 
-        return await this.statementItems.create({
+        const item = await this.statementItems.create({
           data: {
             type: MonoEventTypeEnum.StatementItem,
             account,
@@ -48,10 +52,15 @@ export class MonoEventsRepository {
             operationAmount
           }
         })
+        await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(item, null, 2)}`)
+        return item
       }
 
-      return await this.unknownEvents.create({ data: { event: JSON.stringify(event) } })
-    } catch {
+      const item = await this.unknownEvents.create({ data: { event: JSON.stringify(event) } })
+      await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(item, null, 2)}`)
+      return item
+    } catch (e) {
+      await this.telegram.log('MonoEventsRepository', `\n${JSON.stringify(e, null, 2)}`)
       return null
     }
   }

@@ -1,10 +1,11 @@
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common'
 import { AxiosRequestConfig } from 'axios'
 import { MONO_PERSONAL_CLIENT_INFO_API, MONO_PERSONAL_CLIENT_INFO_CHECK_INTERVAL, MONO_PERSONAL_CLIENT_WEBHOOK_API, SYSTEM_EVENTS_API } from '../../constants/constants'
-import { isNotEmptyString } from '../../utils/utils'
-import { filter, Subject, switchMap, takeUntil, timer } from 'rxjs'
+import { getScreamingSnakeCase, isNotEmptyString } from '../../utils/utils'
+import { filter, map, Subject, switchMap, takeUntil, tap, timer } from 'rxjs'
 import { ConfigService } from '@nestjs/config'
 import { HttpService } from '@nestjs/axios'
+import { TelegramService } from '../telegram/telegram.service'
 @Injectable()
 export class MonoWebHookService implements OnModuleInit, OnModuleDestroy {
   private readonly onInit$ = new Subject()
@@ -16,7 +17,8 @@ export class MonoWebHookService implements OnModuleInit, OnModuleDestroy {
   }
   constructor(
     private readonly config: ConfigService,
-    private readonly http: HttpService
+    private readonly http: HttpService,
+    private readonly telegram: TelegramService
   ) {
     this.checkWebHook()
   }
@@ -35,8 +37,17 @@ export class MonoWebHookService implements OnModuleInit, OnModuleDestroy {
       .pipe(
         switchMap(() => timer(0, MONO_PERSONAL_CLIENT_INFO_CHECK_INTERVAL)),
         switchMap(() => this.http.get(MONO_PERSONAL_CLIENT_INFO_API, this.axiosConfig)),
-        filter(res => !isNotEmptyString(res?.data?.['webHookUrl'])),
+        map(res => {
+          const isWebHookUrlSet = isNotEmptyString(res?.data?.['webHookUrl'])
+          this.telegram.log('MonoWebHookService', `Is webhook url set ${getScreamingSnakeCase(isWebHookUrlSet.toString())}`)
+          return isWebHookUrlSet
+        }),
+        filter(isWebHookUrlSet => !isWebHookUrlSet),
         switchMap(() => this.http.post(MONO_PERSONAL_CLIENT_WEBHOOK_API, { webHookUrl: SYSTEM_EVENTS_API }, this.axiosConfig)),
+        tap(res => {
+          const isWebHookUrlSet = res?.data?.['status'] === 'ok'
+          this.telegram.log('MonoWebHookService', `Webhook url was set ${getScreamingSnakeCase(isWebHookUrlSet.toString())}`)
+        }),
         takeUntil(this.onDestroy$)
       )
       .subscribe()
