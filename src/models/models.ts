@@ -41,5 +41,12 @@ type CustomEnumType<ValuesUnion extends string> = {
   [K in ValuesUnion]: K
 }
 
-type ConfigKeysUnion = 'PORT' | 'HOSTNAME' | 'CORS_ORIGIN' | 'CLIENT_INFO_X_TOKEN' | 'GIT_COMMIT' | 'TELEGRAM_BOT_TOKEN' | 'TELEGRAM_CHANNEL_ID'
+type ConfigKeysUnion =
+  | 'PORT'
+  | 'HOSTNAME'
+  | 'CORS_ORIGIN'
+  | 'CLIENT_INFO_X_TOKEN'
+  | 'GIT_COMMIT'
+  | 'TELEGRAM_BOT_TOKEN'
+  | 'TELEGRAM_CHANNEL_ID'
 export type ConfigKeysType = CustomEnumType<ConfigKeysUnion>

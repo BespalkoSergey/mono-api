@@ -55,7 +55,10 @@ export class MonoEventsRepository {
         })
         await this.telegram.log(
           'MonoEventsRepository',
-          [`Description: <tg-spoiler>${item.description}</tg-spoiler>`, `Operation: ${getMoneyOperationEmoji(item.operationAmount)} ${getGrn(item.operationAmount)}`].join('\n')
+          [
+            `Description: <tg-spoiler>${item.description}</tg-spoiler>`,
+            `Operation: ${getMoneyOperationEmoji(item.operationAmount)} ${getGrn(item.operationAmount)}`
+          ].join('\n')
         )
         return item
       }
