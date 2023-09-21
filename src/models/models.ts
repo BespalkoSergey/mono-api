@@ -35,7 +35,11 @@ export type RawMonoEventStatementItem =
 
 export type DbStatusEmojiUnion = 'CONNECTED' | 'DISCONNECTED'
 
-export type StickersEmojiUnion = 'CREPT_UP_TO_THE_BLINDS'
+export type StickersEmojiUnion =
+  | 'IS_POSITIVE_OPERATION_AMOUNT'
+  | 'NOT_POSITIVE_OPERATION_AMOUNT'
+  | 'UNKNOWN_OPERATION'
+  | 'ERROR_IN_OPERATION'
 
 type CustomEnumType<ValuesUnion extends string> = {
   [K in ValuesUnion]: K

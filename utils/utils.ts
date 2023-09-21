@@ -11,5 +11,6 @@ export const getScreamingSnakeCase = (s: string): string =>
       return c.toUpperCase()
     })
     .join('')
+export const getIsPosMoneyOperation = (n: number): boolean => Math.sign(n) >= 0
 export const getMoneyOperationEmoji = (n: number) => MONEY_OPERATION_TG_EMOJI_MAP[String(Math.sign(n))]
 export const getGrn = (n: number) => Math.round(n / 100)

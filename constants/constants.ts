@@ -7,10 +7,11 @@ export const MONO_PERSONAL_CLIENT_ROUTE = 'https://api.monobank.ua/personal'
 export const MONO_PERSONAL_CLIENT_INFO_API = MONO_PERSONAL_CLIENT_ROUTE + '/client-info'
 export const MONO_PERSONAL_CLIENT_WEBHOOK_API = MONO_PERSONAL_CLIENT_ROUTE + '/webhook'
 export const MONO_PERSONAL_CLIENT_INFO_CHECK_INTERVAL = 1000 * 60 * 15 // 15 min
+export const UNKNOWN_EMOJI = '🤷'
 export const MONEY_OPERATION_TG_EMOJI_MAP: Record<string, string> = {
-  '-1': '😡💸',
-  '0': '😅❓',
-  '1': '😄💰'
+  '-1': '😡 💸',
+  '0': '😅 ❓',
+  '1': '😄 💰'
 }
 
 export const DB_STATUS_TG_EMOJI_MAP: Record<DbStatusEmojiUnion, string> = {
@@ -19,7 +20,10 @@ export const DB_STATUS_TG_EMOJI_MAP: Record<DbStatusEmojiUnion, string> = {
 }
 
 export const STICKERS_MAP: Record<StickersEmojiUnion, string> = {
-  CREPT_UP_TO_THE_BLINDS: '1f9e5281-27fe-48ec-82cc-0083c998448f'
+  IS_POSITIVE_OPERATION_AMOUNT: '😎',
+  NOT_POSITIVE_OPERATION_AMOUNT: '😡',
+  UNKNOWN_OPERATION: '👆',
+  ERROR_IN_OPERATION: '🤢'
 }
 
 export const TG_STICKER_SET_NAME = 'TheOfficeSP'

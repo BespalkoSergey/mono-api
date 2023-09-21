@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config'
 import { filter, from, map, shareReplay, switchMap, takeWhile } from 'rxjs'
 import { Observable } from 'rxjs'
 import { StickerSet, Sticker } from '@telegraf/types/message'
-import { StickersEmojiUnion } from '../models/models'
 import { CONFIG_KEYS, TG_STICKER_SET_NAME } from '../../constants/constants'
 
 @Injectable()
@@ -22,13 +21,13 @@ export class TelegramService {
     await this.bot.telegram.sendMessage(this.channelId, text, { disable_notification: true, parse_mode: 'HTML' })
   }
 
-  public sendSticker(emoji: StickersEmojiUnion): void {
+  public sendSticker(emoji: string): void {
     this.stickers$
       .pipe(
         map(list => list.stickers.find(s => s.emoji === emoji)),
         takeWhile(s => !!s),
         filter((c: unknown): c is Sticker => !!c),
-        switchMap(s => from(this.bot.telegram.sendSticker(this.channelId, s.file_unique_id)))
+        switchMap(s => from(this.bot.telegram.sendSticker(this.channelId, s.file_id, { disable_notification: true })))
       )
       .subscribe()
   }
