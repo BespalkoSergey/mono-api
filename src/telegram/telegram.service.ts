@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { InjectBot } from 'nestjs-telegraf'
 import { Telegraf } from 'telegraf'
 import { ConfigService } from '@nestjs/config'
-import { filter, from, map, shareReplay, switchMap, takeWhile } from 'rxjs'
+import { filter, from, map, shareReplay, switchMap, takeWhile, lastValueFrom } from 'rxjs'
 import { Observable } from 'rxjs'
 import { StickerSet, Sticker } from '@telegraf/types/message'
 import { CONFIG_KEYS, TG_STICKER_SET_NAME } from '../../constants/constants'
@@ -21,14 +21,14 @@ export class TelegramService {
     await this.bot.telegram.sendMessage(this.channelId, text, { disable_notification: true, parse_mode: 'HTML' })
   }
 
-  public sendSticker(emoji: string): void {
-    this.stickers$
-      .pipe(
+  public async sendSticker(emoji: string): Promise<void> {
+    await lastValueFrom(
+      this.stickers$.pipe(
         map(list => list.stickers.find(s => s.emoji === emoji)),
         takeWhile(s => !!s),
         filter((c: unknown): c is Sticker => !!c),
         switchMap(s => from(this.bot.telegram.sendSticker(this.channelId, s.file_id, { disable_notification: true })))
       )
-      .subscribe()
+    )
   }
 }
