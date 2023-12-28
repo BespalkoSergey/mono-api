@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import * as cors from 'cors'
-import { API_ROUTE } from '../constants/constants'
+import { API_ROUTE, CONFIG_KEYS } from '../constants/constants'
 import { MonoWebHookService } from './services/mono-web-hook.service'
 import { HttpModule } from '@nestjs/axios'
 import { DatabaseModule } from './database/database.module'
@@ -19,7 +19,7 @@ export class AppModule implements NestModule {
     consumer
       .apply(
         cors({
-          origin: this.config.get<string>('CORS_ORIGIN'),
+          origin: this.config.get<string>(CONFIG_KEYS.CORS_ORIGIN),
           methods: ['GET', 'POST'],
           allowedHeaders: ['Content-Type', 'Authorization'],
           credentials: true
